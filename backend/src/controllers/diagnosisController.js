@@ -10,19 +10,26 @@ const STATUS = {
 }
 
 // CREATE DIAGNOSIS (Doctor and Admin)
-// START OF GET ALL DIAGNOSIS FUNCTION for (ROLES)
+// START OF CREATE ALL DIAGNOSIS FUNCTION for (ROLES)
 export const createDiagnosis = async (req, res) => {
   // Start of try catch block for error handling
   try {
 
     // 
-    const { patientId, doctorId, adminId, diagnosis, symptoms, prescription } = req.body;
+    const { patientId, diagnosis, symptoms, prescription } = req.body;
+
+    // Below code is used to validate the user data
+    if (!req.user || !req.user.id) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        status: STATUS.ERROR,
+        message: 'Authentication failed: No user found on request'
+      });
+    }
 
     // Below code is used to create a new patient
     const newDiagnosis = await Diagnosis.create({
       patientId,
       doctorId: req.user.id, // Use the authenticated user's ID as the doctorId
-      adminId,
       diagnosis,
       symptoms,
       prescription
@@ -32,7 +39,7 @@ export const createDiagnosis = async (req, res) => {
     const savedDiagnosis = await newDiagnosis.save();
 
     // Return the saved diagnosis in the response
-    res.status(StatusCodes.OK).json({
+    res.status(StatusCodes.CREATED).json({
       status: STATUS.SUCCESS,
       message: 'Diagnosis created successfully',
       data: savedDiagnosis
@@ -45,12 +52,13 @@ export const createDiagnosis = async (req, res) => {
     });
   }
 };
-// END OF GET ALL DIAGNOSIS FUNCTION for (ROLES)
+// END OF CREATE ALL DIAGNOSIS FUNCTION for (ROLES)
 
 
 // GET DIAGNOSIS BY PATIENT ID (Doctor and Admin)
 // START OF GET DIAGNOSIS BY PATIENT ID FUNCTION for (ROLES)
 export const getDiagnosisByPatientId = async (req, res) => {
+
   // Start of try catch block for error handling
   try {
     const { patientId } = req.params;
@@ -58,6 +66,7 @@ export const getDiagnosisByPatientId = async (req, res) => {
     // Below code is used to find diagnosis by patient ID
     const diagnosis = await Diagnosis.find({ patientId }).sort({ createdAt: -1 }); //.populate("doctorId", "name email").populate("patientId", "name age"); // Sort by creation date (newest first)
 
+    // If no diagnosis is found for the specified patient ID, return a 404 response
     if (!diagnosis || diagnosis.length === 0) {
       return res.status(StatusCodes.NOT_FOUND).json({
         status: STATUS.FAILED,
@@ -83,6 +92,7 @@ export const getDiagnosisByPatientId = async (req, res) => {
 
 // START OF GET ALL DIAGNOSIS FUNCTION for (ROLES)
 export const getAllDiagnosis = async (req, res) => {
+  
   // Start of try catch block for error handling
   try {
     
@@ -104,9 +114,51 @@ export const getAllDiagnosis = async (req, res) => {
 // END OF GET ALL DIAGNOSIS FUNCTION for (ROLES)
 
 
+// UPDATE DIAGNOSIS BY PATIENT ID (Doctor and Admin)
+// START OF UPDATE DIAGNOSIS BY PATIENT ID FUNCTION for (ROLES)
+export const updateDiagnosisByPatientId = async (req, res) => {
+  // Start of try catch block for error handling
+  try {
+    const { patientId } = req.params;
+    const { diagnosis, symptoms, prescription } = req.body;
+
+    // Find the diagnosis by patient ID
+    const diagnosisToUpdate = await Diagnosis.findOne({ patientId });
+
+    // If no diagnosis is found for the specified patient ID, return a 404 response
+    if (!diagnosisToUpdate) {
+      return res.status(StatusCodes.NOT_FOUND).json({
+        status: STATUS.FAILED,
+        message: 'No diagnosis found for the specified patient ID'
+      });
+    }
+
+    // Update the diagnosis
+    diagnosisToUpdate.diagnosis = diagnosis;
+    diagnosisToUpdate.symptoms = symptoms;
+    diagnosisToUpdate.prescription = prescription;
+
+    // Save the updated diagnosis
+    const updatedDiagnosis = await diagnosisToUpdate.save();
+
+    res.status(StatusCodes.OK).json({
+      status: STATUS.SUCCESS,
+      message: 'Diagnosis updated successfully',
+      data: updatedDiagnosis
+    });
+  } catch (error) {
+    res.status(StatusCodes.BAD_REQUEST).json({
+      status: STATUS.ERROR,
+      message: 'Failed to update diagnosis',
+      errors: error.message
+    });
+  }
+};
+// END OF UPDATE DIAGNOSIS BY PATIENT ID FUNCTION for (ROLES)
 
 export default {
   createDiagnosis,
   getDiagnosisByPatientId,
-  getAllDiagnosis
+  getAllDiagnosis,
+  updateDiagnosisByPatientId
 };

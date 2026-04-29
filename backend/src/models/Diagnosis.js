@@ -14,10 +14,6 @@ const diagnosisSchema = new mongoose.Schema({
     ref: 'Doctor',
     required: true
   },
-  adminId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Admin'
-  },
    symptoms: {
     type: String,
     required: true

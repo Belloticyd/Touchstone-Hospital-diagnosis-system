@@ -21,15 +21,14 @@ export const createPatient = async (req, res) => {
 
     // Start of try catch block for error handling
     try {
-        const { names, age, gender, contactInfo, medicalHistory } = req.body;
+        const { names, age, gender, contactInfo } = req.body;
 
         // Below code is used to create a new patient
         const patient = await  Patient.create({
             names,
             age,
             gender,
-            contactInfo,
-            medicalHistory
+            contactInfo
         });
 
         // Below code is used to save it inside the database

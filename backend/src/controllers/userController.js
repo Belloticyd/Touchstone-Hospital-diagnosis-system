@@ -101,7 +101,10 @@ export const loginUser = async (req, res) => {
 
         // If the password is valid, generate a JWT token for authentication
         const token = jwt.sign(
-            { userId: user._id, role: user.role }, // Payload containing user ID and role
+            { 
+                id: user._id || user.id || user.userId,
+                role: user.role 
+             }, // Payload containing user ID and role
             process.env.JWT_SECRET, // Secret key for signing the token (should be stored in environment variables)
             { expiresIn: '7d' } // Token expiration time (e.g., 1 hour)
         );

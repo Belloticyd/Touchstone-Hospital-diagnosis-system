@@ -9,7 +9,8 @@ import express from 'express';
 import { 
     createDiagnosis, 
     getDiagnosisByPatientId, 
-    getAllDiagnosis 
+    getAllDiagnosis,
+    updateDiagnosisByPatientId
 
 } from '../controllers/diagnosisController.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
@@ -21,12 +22,13 @@ const router = express.Router();
 router.post('/', authMiddleware, authorizeRoles('doctor', 'admin'), createDiagnosis);
 
 // Route for retrieving all diagnoses (accessible by doctors and admins)
-router.get('/all', authMiddleware,
+router.get('/', authMiddleware,
         authorizeRoles('admin', 'doctor', 'nurse', 'patient',
         'radiographer', 'sonographer', 'lab_technician', 
         'pharmacist', 'receptionist', 'accountant', 
         'hr_manager', 'it_support','receptionist'), getAllDiagnosis
-    );
+);
+
 
 // Route for retrieving diagnosis by patient ID (accessible by doctors and admins)
 router.get('/:patientId', authMiddleware, 
@@ -35,5 +37,12 @@ router.get('/:patientId', authMiddleware,
         'pharmacist', 'receptionist', 'accountant', 
         'hr_manager', 'it_support','receptionist'), getDiagnosisByPatientId
 );
+
+
+// Route for updating diagnosis by patient ID (accessible by doctors and admins)
+router.put('/:patientId', authMiddleware, authorizeRoles('doctor', 'admin'), updateDiagnosisByPatientId);   
+
+
+
 
 export default router;

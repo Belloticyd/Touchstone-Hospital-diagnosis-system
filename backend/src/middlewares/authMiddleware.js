@@ -24,11 +24,15 @@ export const authMiddleware = (req, res, next) => {
         });
     }
 
-    const token = authHeader.substring(7); // Remove 'Bearer ' prefix
+    const token = authHeader.split(" ")[1]; // Remove 'Bearer ' prefix
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
+        console.log(`id is ${decoded}`)
+        req.user = {
+            id: decoded.id || decoded.userId || decoded._id, 
+            role: decoded.role
+            };
         next();
     } catch (error) {
         return res.status(httpStatus.UNAUTHORIZED).json({

@@ -12,6 +12,7 @@ import mongoose from 'mongoose';
 import userRoutes from './routes/userRoutes.js';
 import patientRoutes from './routes/patientRoutes.js';
 import diagnosisRoutes from './routes/diagnosisRoutes.js';
+import labRoutes from './routes/labRoutes.js';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -56,7 +57,7 @@ app.get('/', (req, res) => {
 });
 
 // Test route to check if the server is running
-app.get('/test', (req, res) => {
+app.get('/test', (req, res) => {  
   res.json({ message: 'API is up and working Perfectly!' });
 });
 
@@ -65,6 +66,7 @@ app.get('/test', (req, res) => {
 app.use('/api/users', userRoutes);
 app.use('/api/patients', patientRoutes);
 app.use('/api/diagnosis', diagnosisRoutes);
+app.use('/api/lab', labRoutes);
 
 
 
