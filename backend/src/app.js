@@ -25,7 +25,7 @@ const app = express();
 // Below code is used to set up cors and body-parser middleware for the express app
 // Cors Start Here
 app.use(cors({
-  origin: 'http://localhost:3000', // Allow all origins (you can specify specific origins if needed)
+  origin: 'http://localhost:5173', // Allow all origins (you can specify specific origins if needed)
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific HTTP methods
   credentials: true, // if you want to send cookies
   allowedHeaders: ['Content-Type', 'Authorization'] // Allow specific headers
