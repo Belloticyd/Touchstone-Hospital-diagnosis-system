@@ -2,6 +2,7 @@
 
 // Import necessary libraries and components
 import  { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import API from "../services/api";
 import { AuthContext } from '../context/AuthContext';
 
@@ -11,6 +12,10 @@ import { AuthContext } from '../context/AuthContext';
 const Login = () => {
     
     const {setUser} = useContext(AuthContext); // Get setUser function from AuthContext
+
+    const navigation = useNavigate(); // Get navigation function from react-router-dom
+
+  
 
     const [form, setForm] = useState({
         email: "",
@@ -26,10 +31,31 @@ const Login = () => {
             // Send a POST request to the login endpoint with the form data
             const res = await API.post('users/login', form);
 
-            localStorage.setItem('token', res.data.token); // Store the token in localStorage
+            console.log("Full Server Response:", res.data);
+
+            // From AI
+            const token = res.data.token || res.data.data?.token;
+            const user = res.data.user || res.data.data?.user;
+
+            // Check if we actually got what we need
+            if (!token) {
+                console.error("Token is missing! Check backend response structure.");
+                alert("Login failed: Server did not return a security token.");
+                return;
+            }
+
+           // Store the token in localStorage for future authenticated requests
+            localStorage.setItem('token', res.data.token); 
             setUser(res.data.user); // Update the user state in AuthContext with the logged-in user's data
 
             alert('Login successful!'); // Alert the user of successful login
+
+            // Navigate to the Dashboard after successful login
+            navigation('/dashboard'); 
+
+            // Inside Login.jsx after finding 'user'
+            localStorage.setItem('user', JSON.stringify(user)); 
+            setUser(user);
 
         } catch (err) {
             console.error('Login failed:', err);
