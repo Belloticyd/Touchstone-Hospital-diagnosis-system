@@ -25,7 +25,7 @@ const AddPatient = () => {
 
             // Call the createPatient function to send the form data to the backend API
             await createPatient(formData); 
-            alert('Patient added successfully!'); // Show a success message to the user
+            alert('Patient New Record added successfully!'); // Show a success message to the user
 
             // Reset the form fields after successful submission
             setFormData({ names: '', age: '',gender:'', contact: '' }); 

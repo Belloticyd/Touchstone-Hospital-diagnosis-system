@@ -1,11 +1,10 @@
 
 // Importing the necessary libraries and components
-import React from 'react'
 import { useEffect, useState } from 'react';
 
 // importing local components
 import Layout from '../components/Layout';
-import { getPatients } from '../services/api'; // Import the API function to fetch patients data
+import API from '../services/api'; // Import the API function to fetch patients data
 
 
 
@@ -20,8 +19,9 @@ const Patients = () => {
             try {
 
                 // Call the API function to fetch patients data
-                const data = await getPatients(); 
+                const data = await API.get('patients');
                 setPatients(data); // Update the state with the fetched data
+                console.log(`Patient Data is ${data}`)
             } catch (error) {
                 console.error('Error fetching patients:', error);
             }
@@ -38,7 +38,7 @@ const Patients = () => {
     <Layout>
 
       <div>
-        <h1 className="text-xl font-bold mb-4">Patients</h1>
+        <h1 className="text-xl font-bold mb-4">Patients Record</h1>
 
         <table className="w-full bg-white shadow rounded">
           <thead>

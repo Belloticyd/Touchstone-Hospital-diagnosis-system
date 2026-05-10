@@ -22,12 +22,23 @@ const Layout = ({ children}) => {
             <h2 className="text-xl font-bold mb-6">Hospital System</h2>
 
             <ul className="space-y-3">
-                {user?.role === "admin" && <li className='cursor-pointer'>Manage Users</li>}
+                {user?.role === "admin" && (
+                    <>
+                        <li className='cursor-pointer'>Manage Users</li>
+                        <li className='cursor-pointer'>Dashboard</li>
+                        <li className='cursor-pointer'>Patients</li>
+                        <li className='cursor-pointer'>Add Patient</li>
+                        <li className='cursor-pointer'>View Patients Record </li>
+                        <li className='cursor-pointer'>Update Patients Record</li>
+                        <li className='cursor-pointer'>Lab Results</li>
+                        <li className='cursor-pointer'>Create Diagnosis</li>
+                    </>
+                )}
 
                 {user?.role === "doctor" && (
                     <>
                         <li className='cursor-pointer'>
-                            Patients
+                            View Patients Records
                         </li>
                         <li className='cursor-pointer'>
                             Create Diagnosis
@@ -35,12 +46,28 @@ const Layout = ({ children}) => {
                     </>
                 )}
 
-                {user?.role === "lab" && <li className='cursor-pointer'>Lab Results</li>}
+                {user?.role === "lab" && (
+                    <>
+                        <li className='cursor-pointer'>
+                            View Patients Records
+                        </li>
+                        <li className='cursor-pointer'>
+                            Lab Results
+                        </li>
+                    </>
+                    )}
 
                 {user?.role === "reception" && (
                     <>
-                    <li className='cursor-pointer'>Add Patient</li>
-                    <li className='cursor-pointer'>View Patients Record </li>
+                        <li className='cursor-pointer'>
+                            Add Patient
+                        </li>
+                        <li className='cursor-pointer'>
+                            View Patients Record 
+                        </li>
+                        <li className='cursor-pointer'>
+                            Update Patients Record 
+                        </li>
                     </>
                 )}
             </ul>

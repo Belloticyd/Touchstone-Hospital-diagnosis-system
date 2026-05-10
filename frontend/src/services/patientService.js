@@ -8,7 +8,7 @@ export const getAllPatients = async () => {
 
     // Start a try-catch block to handle potential errors during the API call
     try {
-        const response = await API.get('/patients');
+        const response = await API.get('patients');
         return response.data;
     } catch (error) {
         console.error('Could not fetch patients:', error);
@@ -20,7 +20,7 @@ export const getAllPatients = async () => {
 // GET A SINGLE PATIENT BY ID
 export const getPatientById = async (id) => {
     try {
-        const response = await API.get(`/patients/${id}`);
+        const response = await API.get(`patients/${id}`);
         return response.data;
     } catch (error) {
         console.error(`Could not fetch patient with ID ${id}:`, error);
@@ -31,8 +31,10 @@ export const getPatientById = async (id) => {
 // CREATE A NEW PATIENT
 export const createPatient = async (patientData) => {
     try {
-        const response = await API.post('/patients', patientData);
+
+        const response = await API.post('patients', patientData);
         return response.data;
+        
     } catch (error) {
         console.error('Could not create patient:', error);
         throw error;
@@ -42,7 +44,7 @@ export const createPatient = async (patientData) => {
 // UPDATE AN EXISTING PATIENT
 export const updatePatient = async (id, patientData) => {
     try {
-        const response = await API.put(`/patients/${id}`, patientData);
+        const response = await API.put(`patients/${id}`, patientData);
         return response.data;
     } catch (error) {
         console.error(`Could not update patient with ID ${id}:`, error);

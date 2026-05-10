@@ -39,10 +39,10 @@ const Dashboard = () => {
                 <p className="mb-6 text-gray-500">This is your hospital management dashboard.</p>
                 
                 <button 
-                    onClick={handleLogout}
-                    className="bg-red-400 hover:bg-red-700 text-white font-bold py-2 px-6 rounded transition duration-200 cursor-pointer"
+                  onClick={handleLogout}
+                  className="bg-red-400 hover:bg-red-700 text-white font-bold py-2 px-6 rounded transition duration-200 cursor-pointer"
                 >
-                    Logout
+                  Logout
                 </button>
             </div>
           </div>

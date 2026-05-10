@@ -11,6 +11,8 @@ import Users from "./pages/Users"
 import Lab from "./pages/Lab"
 import RoleRoute from "./components/RoleRoute"
 import AddPatient from "./pages/AddPatient"
+import Diagnosis from "./pages/Diagnosis";
+import PatientHistory from "./pages/PatientHistory";
 
 function App() {
 
@@ -20,6 +22,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Users />} />
 
         <Route path="/dashboard" 
           element={
@@ -48,13 +51,37 @@ function App() {
         />
 
         {/*The User Management Route */}
-        <Route path="/users"
+        <Route path="/Users"
           element={
             <RoleRoute allowedRoles={["admin"]}>
               <Users />
             </RoleRoute>
           }
         />
+
+        {/* The Diagnosis Route */}
+        <Route path="/diagnosis"
+          element={ 
+            <RoleRoute allowedRoles={["admin", "doctor"]}>
+              <Diagnosis />
+            </RoleRoute>
+          }
+        />
+
+        {/* The Patient History Route */}
+        <Route path="/patient-history"
+          element={
+            <RoleRoute allowedRoles={[
+              "admin", "doctor", "nurse", "patient",
+              "radiographer", "sonographer", "lab_technician", 
+              "pharmacist", "receptionist", "accountant", "hr_manager", "it_support"]}>
+              <PatientHistory />
+            </RoleRoute>
+          }
+        />
+
+
+
 
         {/*The Lab Route */}
         <Route path="/lab"

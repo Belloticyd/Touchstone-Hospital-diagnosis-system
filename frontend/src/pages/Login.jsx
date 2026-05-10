@@ -5,6 +5,7 @@ import  { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from "../services/api";
 import { AuthContext } from '../context/AuthContext';
+import Users from './Users';
 
 
 
@@ -24,48 +25,43 @@ const Login = () => {
 
     // Create a handleLogin function to handle form submission
     const handleLogin = async (e) => {
-        e.preventDefault(); // Prevent default form submission behavior
+        e.preventDefault();
 
-        // Start of try block to handle login logic
         try {
-            // Send a POST request to the login endpoint with the form data
             const res = await API.post('users/login', form);
-
             console.log("Full Server Response:", res.data);
 
-            // From AI
+            // 1. Safely extract token and user
             const token = res.data.token || res.data.data?.token;
             const user = res.data.user || res.data.data?.user;
 
-            // Check if we actually got what we need
             if (!token) {
                 console.error("Token is missing! Check backend response structure.");
                 alert("Login failed: Server did not return a security token.");
                 return;
             }
 
-           // Store the token in localStorage for future authenticated requests
-            localStorage.setItem('token', res.data.token); 
-            setUser(res.data.user); // Update the user state in AuthContext with the logged-in user's data
-
-            alert('Login successful!'); // Alert the user of successful login
-
-            // Navigate to the Dashboard after successful login
-            navigation('/dashboard'); 
-
-            // Inside Login.jsx after finding 'user'
+            // 2. Save everything to localStorage
+            localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user)); 
-            setUser(user);
+
+            // 3. Update the global state
+            setUser(user); 
+
+            alert('Login successful!');
+
+            // 4. Navigate
+            navigation('/dashboard'); 
 
         } catch (err) {
             console.error('Login failed:', err);
-            alert(err.response?.data?.message || 'Login failed. Please try again.'); // Alert the user of login failure with an error message
+            alert(err.response?.data?.message || 'Login failed. Please try again.');
         }   
     };
 
     // Return the JSX for the login form
     return (
-        <div className="flex items-center justify-center h-screen bg-gray-100">
+        <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
             <form onSubmit={handleLogin} className="bg-white p-6 rounded shadow w-80">
                 <h2 className="text-xl font-bold mb-4 text-center">Login Page</h2>
 
@@ -87,6 +83,11 @@ const Login = () => {
                     Login
                 </button>
             </form>
+
+            {/* To register page */}
+            <p className="text-center mt-4">
+                Don't have an account?{" "}<button className="text-blue-500 hover:text-blue-800 hover:underline cursor-pointer" onClick={() => navigation('/Users')}>Register here</button>
+            </p>
         </div>
     );
 };
