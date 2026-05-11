@@ -9,15 +9,17 @@ import { AuthContext } from "../context/AuthContext";
 const RoleRoute = ({ children, allowedRoles }) => {
 
     // Get the current user from AuthContext
-    const { user } = useContext(AuthContext); 
+    const { user, loading } = useContext(AuthContext); 
+
+    if (loading) return <div>Loading...</div>;
 
     // Check if the user is authenticated and has an allowed role
     if (!user) {
-        return <Navigate to="/login" />;
+        return <Navigate to="/" />;
     }
 
     if (!allowedRoles.includes(user.role)) {
-        return <Navigate to="/unauthorized" />;
+        return <Navigate to="/dashboard" />;
     }
 
     return children;

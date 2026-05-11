@@ -21,37 +21,38 @@ function App() {
     
     <Router>
       <Routes>
+        {/* PUBLIC ROUTES */}
         <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Users />} />
+        <Route path="/register" element={<Users />} /> {/* Changed this to be the public register link */}
 
+        {/* PROTECTED ROUTES - General */}
         <Route path="/dashboard" 
           element={
             <PrivateRoute>
               <Dashboard />
             </PrivateRoute>
-          }
+          } 
         />
 
-        {/* The Patients Route */}
+        {/* ROLE PROTECTED ROUTES */}
         <Route path="/patients"
           element={
-            <RoleRoute allowedRoles={["admin", "reception"]}>
+            <RoleRoute allowedRoles={["admin", "receptionist"]}> 
               <Patients />
             </RoleRoute>
           }
         />
 
-          {/* The Add Patient Route */}
         <Route path="/add-patient"
           element={
-            <RoleRoute allowedRoles={["admin", "reception"]}>
+            <RoleRoute allowedRoles={["admin", "receptionist"]}>
               <AddPatient />
             </RoleRoute>
           }
         />
 
-        {/*The User Management Route */}
-        <Route path="/Users"
+        {/* Admin only Management */}
+        <Route path="/admin/users"
           element={
             <RoleRoute allowedRoles={["admin"]}>
               <Users />
@@ -59,7 +60,6 @@ function App() {
           }
         />
 
-        {/* The Diagnosis Route */}
         <Route path="/diagnosis"
           element={ 
             <RoleRoute allowedRoles={["admin", "doctor"]}>
@@ -68,22 +68,6 @@ function App() {
           }
         />
 
-        {/* The Patient History Route */}
-        <Route path="/patient-history"
-          element={
-            <RoleRoute allowedRoles={[
-              "admin", "doctor", "nurse", "patient",
-              "radiographer", "sonographer", "lab_technician", 
-              "pharmacist", "receptionist", "accountant", "hr_manager", "it_support"]}>
-              <PatientHistory />
-            </RoleRoute>
-          }
-        />
-
-
-
-
-        {/*The Lab Route */}
         <Route path="/lab"
           element={
             <RoleRoute allowedRoles={["admin", "doctor", "lab_technician"]}>
@@ -92,8 +76,8 @@ function App() {
           }
         />
 
-        {/* The missing page route */}
-        <Route path="*" element = {<MissingPage />} />
+        {/* CATCH ALL */}
+        <Route path="*" element={<MissingPage />} />
       </Routes>
     </Router>
     

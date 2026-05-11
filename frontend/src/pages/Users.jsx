@@ -1,7 +1,7 @@
 
 // Import necessary libraries and components
 import  { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import API from "../services/api";
 import { AuthContext } from '../context/AuthContext';
 import { registerUser } from '../services/userService';
@@ -19,18 +19,28 @@ const Users = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    // STart of validation
+    if (!userData.names || !userData.email || !userData.password || !userData.role) {
+      alert("Please fill in all fields");
+      return;
+    }
+
     try {
+
       const response = await registerUser(userData);
       console.log("User registered:", response);
-      navigate("/login");
+      alert("User registered successfully!");
+      navigate("/dashboard");
+
     } catch (error) {
       console.error("Error registering user:", error);
     }
   };
 
   return (
-    <div className='flex items-center justify-center h-screen bg-gray-100'>
-      <h2>Register New User</h2>
+    <div className='flex flex-col items-center justify-center h-screen bg-gray-100'>
+      <h2 className='text-xl font-bold mb-4 text-center'>Register New User</h2>
       <form onSubmit={handleRegister} className='bg-white p-6 rounded shadow w-80'>
         <input
           type="text"
@@ -78,6 +88,10 @@ const Users = () => {
         <button className="w-full bg-blue-500 text-white p-2 rounded cursor-pointer hover:bg-blue-800" type="submit">
           Register
         </button>
+
+        <p className="mt-4 text-center text-sm">
+          Already have an account? <Link to="/" className="text-blue-500 hover:underline">Login here</Link>
+        </p>
       </form>
     </div>
   )

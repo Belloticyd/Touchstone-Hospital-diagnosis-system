@@ -82,12 +82,13 @@ const Login = () => {
                 <button className="w-full bg-blue-500 text-white p-2 rounded cursor-pointer hover:bg-blue-800" type="submit">
                     Login
                 </button>
+
+                {/* To register page */}
+                <p className="text-center mt-8">
+                    Don't have an account?{" "}<button className="text-blue-500 hover:text-blue-800 hover:underline cursor-pointer" onClick={() => navigation('/register')}>Register here</button>
+                </p>
             </form>
 
-            {/* To register page */}
-            <p className="text-center mt-4">
-                Don't have an account?{" "}<button className="text-blue-500 hover:text-blue-800 hover:underline cursor-pointer" onClick={() => navigation('/Users')}>Register here</button>
-            </p>
         </div>
     );
 };
